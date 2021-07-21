@@ -126,7 +126,7 @@ module.exports = function (eleventyConfig) {
       // NOTE: These two paths are relative to dir.input
       // @see https://github.com/11ty/eleventy/issues/232
       includes: "_includes",
-      data: "_data",
+      data: "../_data",
     },
   };
 };
