@@ -86,15 +86,6 @@
 
     <!-- **** CONCLUSION, favicons **** -->
 
-    <link rel="preload" href="/assets/fonts/Inter-3-19_subset_2021-06-18.woff2" crossorigin="anonymous" as="font" type="font/woff2" />
-    
-    {% if eleventyEnv == "production" %}
-      <link rel="preload" href="/css/{{ csshash.indexCSS }}" as="style" />
-      <link rel="stylesheet" href="/css/{{ csshash.indexCSS }}" type="text/css" />
-    {% else %}
-      <link rel="stylesheet" href="/css/index.css" type="text/css" />
-    {% endif %}
-
     <!-- Fathom - beautiful, simple website analytics -->
     <script src="https://boa.brycewray.com/script.js" charset="utf-8" site="CSERHYIA" included-domains="brycewray.com,www.brycewray.com" defer></script>
     <!-- / Fathom -->
@@ -102,6 +93,9 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/Performance/dns-prefetch#best_practices -->
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+
+
+    <link rel="preload" href="/assets/fonts/Inter-3-19_subset_2021-06-18.woff2" crossorigin="anonymous" as="font" type="font/woff2" />
 
     {% if build.env == "production" %}
       {# Add any CSS from the main script #}
