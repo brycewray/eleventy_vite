@@ -28,37 +28,8 @@
           "value": "1"
         },
         {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'none'; connect-src 'self'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'; style-src 'self'; img-src 'self' https://*.brycewray.com https://*.cloudinary.com data:; font-src 'self'; script-src 'self' https://*.brycewray.com"
-        },
-        {
           "key": "Referrer-Policy",
           "value": "no-referrer, strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Report-To",
-          "value": "{'group':'default','max_age':31536000,'endpoints':[{'url':'https://brycewray.report-uri.com/a/d/g'}],'include_subdomains':true}"
-        },
-        {
-          "key": "NEL",
-          "value": "{'report_to':'default','max_age':31536000,'include_subdomains':true}"
-        }
-      ]
-    },
-    {
-      "source": "/css/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=2592000, immutable"
-        },
-        {
-          "key": "CDN-Cache-Control",
-          "value": "public, max-age=2592000, immutable"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
         }
       ]
     },
@@ -131,7 +102,7 @@
       ]
     },
     {
-      "source": "/assets/js/(.*)",
+      "source": "/assets-vite/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
