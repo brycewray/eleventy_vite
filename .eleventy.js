@@ -1,4 +1,4 @@
-const fs = require("fs/promises")
+const fs = require("fs")
 const { DateTime } = require("luxon")
 const htmlmin = require("html-minifier")
 const ErrorOverlay = require("eleventy-plugin-error-overlay")
@@ -169,6 +169,69 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addWatchTarget("./src/assets/css/*.css")
   // eleventyConfig.addWatchTarget("./src/assets/scss/*.scss")
   eleventyConfig.addWatchTarget("./src/**/*.md")
+
+
+  eleventyConfig.setBrowserSyncConfig({
+    ...eleventyConfig.browserSyncConfig,
+    files: [
+      "src/**/*.js", 
+      "src/assets/css/*.css", 
+      // "src/assets/scss/*.scss", 
+      "src/**/*.md"
+    ],
+    ghostMode: false,
+    // port: 3000, // (needs to be default 8080 if using Vite)
+    callbacks: {
+      ready: function(err, bs) {
+        bs.addMiddleware("*", (req, res) => {
+          const content_404 = fs.readFileSync('_site/404.html')
+          // Add 404 http status code in request header.
+          res.writeHead(404, { "Content-Type": "text/html; charset=UTF-8" })
+          // Provides the 404 content without redirect.
+          res.write(content_404)
+          res.end()
+        })
+      }
+    },
+    snippet: false,
+  })
+
+  eleventyConfig.addShortcode(
+    "imgc",
+    require("./src/assets/utils/imgc.js")
+  )
+  eleventyConfig.addShortcode(
+    "disclaimer",
+    require("./src/assets/utils/disclaimer.js")
+  )
+
+  eleventyConfig.addTransform("htmlmin", function (content, outputPath) {
+    if (outputPath && outputPath.endsWith(".html")) {
+      let minified = htmlmin.minify(content, {
+        useShortDoctype: true,
+        removeComments: true,
+        collapseWhitespace: true,
+      })
+      return minified
+    }
+    return content
+  })
+
+
+  /* === START, prev/next posts stuff === */
+  // https://github.com/11ty/eleventy/issues/529#issuecomment-568257426
+  eleventyConfig.addCollection("posts", function (collection) {
+    const coll = collection.getFilteredByTag("post")
+    for (let i = 0; i < coll.length; i++) {
+      const prevPost = coll[i - 1]
+      const nextPost = coll[i + 1]
+      coll[i].data["prevPost"] = prevPost
+      coll[i].data["nextPost"] = nextPost
+    }
+    return coll
+  })
+  /* === END, prev/next posts stuff === */
+
 
   // Read Vite's manifest.json, and add script tags for the entry files
   // You could decide to do more things here, such as adding preload/prefetch tags
