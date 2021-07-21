@@ -1,0 +1,17 @@
+{
+  "title": "brycewray.com",
+  "url": "https://www.brycewray.com",
+  "domain": "brycewray.com",
+  "description": "brycewray.com — Observations, opinions, geekery.",
+  "feed": {
+    "subtitle": "brycewray.com — Observations, opinions, geekery.",
+    "filename": "index.xml",
+    "path": "/index.xml",
+    "url": "https://www.brycewray.com/index.xml",
+    "id": "https://www.brycewray.com/"
+  },
+  "author": {
+    "name": "Bryce Wray",
+    "email": "bw@brycewray.com"
+  }
+}

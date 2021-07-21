@@ -1,18 +1,174 @@
-const fs = require("fs/promises");
-const path = require("path");
-const markdownIt = require("markdown-it");
+const fs = require("fs/promises")
+const { DateTime } = require("luxon")
+const htmlmin = require("html-minifier")
+const ErrorOverlay = require("eleventy-plugin-error-overlay")
+const pluginRss = require("@11ty/eleventy-plugin-rss")
+const svgContents = require("eleventy-plugin-svg-contents")
+const path = require('path')
+const Image = require("@11ty/eleventy-img")
 
-const INPUT_DIR = "src";
-const OUTPUT_DIR = "_site";
+const INPUT_DIR = "src"
+const OUTPUT_DIR = "_site"
 
 // This will change both Eleventy's pathPrefix, and the one output by the
 // vite-related shortcodes below. Double-check if you change this, as this is only a demo :)
 const PATH_PREFIX = "/";
 
+
+async function imageShortcode(src, alt) {
+  let sizes = "(min-width: 1024px) 100vw, 50vw"
+  let srcPrefix = `./src/assets/images/`
+  src = srcPrefix + src
+  console.log(`Generating image(s) from:  ${src}`)
+  if(alt === undefined) {
+    // Throw an error on missing alt (alt="" works okay)
+    throw new Error(`Missing \`alt\` on responsive image from: ${src}`)
+  }  
+  let metadataImg = await Image(src, {
+    widths: [600, 900, 1500],
+    formats: ['webp', 'jpeg'],
+    urlPath: "/images/",
+    outputDir: "./_site/images/",
+    filenameFormat: function (id, src, width, format, options) {
+      const extension = path.extname(src)
+      const name = path.basename(src, extension)
+      return `${name}-${width}w.${format}`
+    }
+  })  
+  let lowsrc = metadataImg.jpeg[0]
+  let highsrc = metadataImg.jpeg[metadataImg.jpeg.length - 1]  
+  return `<picture>
+    ${Object.values(metadataImg).map(imageFormat => {
+      return `  <source type="${imageFormat[0].sourceType}" srcset="${imageFormat.map(entry => entry.srcset).join(", ")}" sizes="${sizes}">`
+    }).join("\n")}
+    <img
+      src="${lowsrc.url}"
+      width="${highsrc.width}"
+      height="${highsrc.height}"
+      alt="${alt}"
+      loading="lazy"
+      decoding="async">
+  </picture>`
+}
+
+
 module.exports = function (eleventyConfig) {
-  // Disable whitespace-as-code-indicator, which breaks a lot of markup
-  const configuredMdLibrary = markdownIt({ html: true }).disable("code");
-  eleventyConfig.setLibrary("md", configuredMdLibrary);
+  
+  eleventyConfig.addNunjucksAsyncShortcode("image", imageShortcode)
+  eleventyConfig.addLiquidShortcode("image", imageShortcode)
+  // === Liquid needed if `markdownTemplateEngine` **isn't** changed from Eleventy default
+  eleventyConfig.addJavaScriptFunction("image", imageShortcode)
+
+  eleventyConfig.addPlugin(pluginRss)
+  eleventyConfig.addPlugin(svgContents)
+  eleventyConfig.addPlugin(ErrorOverlay)
+
+  eleventyConfig.setQuietMode(true)
+
+  eleventyConfig.addPassthroughCopy("browserconfig.xml")
+  eleventyConfig.addPassthroughCopy("favicon.ico")
+  eleventyConfig.addPassthroughCopy("robots.txt")
+  eleventyConfig.addPassthroughCopy("./src/assets/fonts")
+  eleventyConfig.addPassthroughCopy("./src/assets/js")
+  eleventyConfig.addPassthroughCopy("./src/assets/svg")
+  eleventyConfig.addPassthroughCopy("./src/images") // not just icons due to that one OG image
+
+  eleventyConfig.setUseGitIgnore(false) // for the sake of CSS generated just for `head`
+
+
+  /* --- date-handling --- */
+
+  eleventyConfig.addFilter("readableDate", (dateObj) => {
+    return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat(
+      "dd LLL yyyy"
+    )
+  })
+
+  // https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string
+  eleventyConfig.addFilter("htmlDateString", (dateObj) => {
+    return DateTime.fromJSDate(dateObj, { zone: 'America/Chicago' }).toFormat("MMMM d, yyyy")
+  })
+
+  eleventyConfig.addFilter("dateStringISO", (dateObj) => {
+    return DateTime.fromJSDate(dateObj).toFormat("yyyy-MM-dd")
+  })
+
+  eleventyConfig.addFilter("dateFromTimestamp", (timestamp) => {
+    return DateTime.fromISO(timestamp, { zone: "utc" }).toJSDate()
+  })
+
+  eleventyConfig.addFilter("dateFromRFC2822", (timestamp) => {
+    return DateTime.fromJSDate(timestamp).toISO()
+  })
+
+  eleventyConfig.addFilter("readableDateFromISO", (dateObj) => {
+    return DateTime.fromISO(dateObj).toFormat("LLL d, yyyy h:mm:ss a ZZZZ")
+  })
+
+  eleventyConfig.addFilter("pub_lastmod", (dateObj) => {
+    return DateTime.fromJSDate(dateObj, { zone: "America/Chicago" }).toFormat(
+      "MMMM d, yyyy"
+    )
+  })
+
+  /* --- end, date-handling */
+
+
+  // https://www.11ty.dev/docs/layouts/
+  eleventyConfig.addLayoutAlias("base", "layouts/_default/base.njk")
+  eleventyConfig.addLayoutAlias("singlepost", "layouts/posts/singlepost.njk")
+  eleventyConfig.addLayoutAlias("index", "layouts/_default/index.njk")
+  eleventyConfig.addLayoutAlias("contact", "layouts/contact/contact.njk")
+  eleventyConfig.addLayoutAlias("privacy", "layouts/privacy/privacy.njk")
+  eleventyConfig.addLayoutAlias("sitemap", "layouts/sitemap/sitemap.njk")
+
+
+  /* --- Markdown handling --- */
+
+  // https://www.11ty.dev/docs/languages/markdown/
+  // --and-- https://github.com/11ty/eleventy-base-blog/blob/master/.eleventy.js
+  // --and-- https://github.com/planetoftheweb/seven/blob/master/.eleventy.js
+  let markdownIt = require("markdown-it")
+  let markdownItFootnote = require("markdown-it-footnote")
+  let markdownItAttrs = require("markdown-it-attrs")
+  let markdownItBrakSpans = require("markdown-it-bracketed-spans")
+  let markdownItPrism = require("markdown-it-prism")
+  let markdownItLinkAttrs = require("markdown-it-link-attributes")
+  let markdownItOpts = {
+    html: true,
+    linkify: false,
+    typographer: true,
+  }
+  const markdownEngine = markdownIt(markdownItOpts)
+  markdownEngine.use(markdownItFootnote)
+  markdownEngine.use(markdownItAttrs)
+  markdownEngine.use(markdownItBrakSpans)
+  markdownEngine.use(markdownItPrism)
+  markdownEngine.use(markdownItLinkAttrs, {
+    pattern: /^https:/,
+    attrs: {
+      target: "_blank",
+      rel: "noreferrer noopener",
+    },
+  })
+  // START, de-bracketing footnotes
+  //--- see http://dirtystylus.com/2020/06/15/eleventy-markdown-and-footnotes/
+  markdownEngine.renderer.rules.footnote_caption = (tokens, idx) => {
+    let n = Number(tokens[idx].meta.id + 1).toString()
+    if (tokens[idx].meta.subId > 0) {
+      n += ":" + tokens[idx].meta.subId
+    }
+    return n
+  }
+  // END, de-bracketing footnotes
+  eleventyConfig.setLibrary("md", markdownEngine)
+  /* --- end, Markdown handling --- */
+
+
+  eleventyConfig.addWatchTarget("src/**/*.js")
+  eleventyConfig.addWatchTarget("./src/assets/css/*.css")
+  // eleventyConfig.addWatchTarget("./src/assets/scss/*.scss")
+  eleventyConfig.addWatchTarget("./src/**/*.md")
 
   // Read Vite's manifest.json, and add script tags for the entry files
   // You could decide to do more things here, such as adding preload/prefetch tags
@@ -114,10 +270,16 @@ module.exports = function (eleventyConfig) {
   }
 
   return {
-    templateFormats: ["md", "njk", "html"],
+    templateFormats: [
+      "html", 
+      "md", 
+      "njk", 
+      "11ty.js"
+    ],
     pathPrefix: PATH_PREFIX,
-    markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
+    markdownTemplateEngine: "njk",
+    passthroughFileCopy: true,
     dataTemplateEngine: "njk",
     passthroughFileCopy: true,
     dir: {
@@ -128,5 +290,5 @@ module.exports = function (eleventyConfig) {
       includes: "_includes",
       data: "../_data",
     },
-  };
+  }
 };
