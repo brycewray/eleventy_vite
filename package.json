@@ -46,12 +46,13 @@
     "vite": "^2.4.3"
   },
   "scripts": {
-    "dev": "concurrently npm:dev:*",
-    "dev:eleventy": "eleventy --serve",
+    "clean": "rm -rf _site",
+    "start": "TAILWIND_MODE=watch NODE_ENV=development npm-run-all clean --parallel dev:*",
+    "dev:eleventy": "ELEVENTY_ENV=development npx @11ty/eleventy --incremental --quiet --serve",
     "dev:vite": "vite",
-    "build": "npm run build:vite && npm run build:eleventy",
-    "build:eleventy": "NODE_ENV=production eleventy",
-    "build:vite": "NODE_ENV=production vite build",
-    "prod": "NODE_ENV=production npm run build && serve _site"
+    "build": "NODE_ENV=production npm-run-all clean prod:vite prod:eleventy",
+    "prod:eleventy": "ELEVENTY_ENV=production npx @11ty/eleventy --output=./_site",
+    "prod:vite": "NODE_ENV=production vite build",
+    "testbuild": "NODE_ENV=production npm run build && serve _site"
   }
 }
