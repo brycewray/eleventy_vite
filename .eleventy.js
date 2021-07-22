@@ -134,6 +134,7 @@ module.exports = function (eleventyConfig) {
   let markdownItBrakSpans = require("markdown-it-bracketed-spans")
   let markdownItPrism = require("markdown-it-prism")
   let markdownItLinkAttrs = require("markdown-it-link-attributes")
+  let markdownItAnchor = require("markdown-it-anchor")
   let markdownItOpts = {
     html: true,
     linkify: false,
@@ -142,6 +143,9 @@ module.exports = function (eleventyConfig) {
   const markdownEngine = markdownIt(markdownItOpts)
   markdownEngine.use(markdownItFootnote)
   markdownEngine.use(markdownItAttrs)
+  markdownEngine.use(markdownItAnchor, {
+    permalink: markdownItAnchor.permalink.headerLink()
+  })
   markdownEngine.use(markdownItBrakSpans)
   markdownEngine.use(markdownItPrism)
   markdownEngine.use(markdownItLinkAttrs, {
