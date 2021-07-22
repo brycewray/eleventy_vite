@@ -1,17 +1,26 @@
 {
-  "name": "eleventy-with-vite",
+  "name": "eleventy-vite",
   "version": "1.0.0",
-  "description": "A demo or template for integrating a Vite build with Eleventy",
-  "author": "Fotis Papadogeorgopoulos (fotis@fpapado.com)",
+  "description": "Based on eleventy-on-vite by Fotis Papadogeorgopoulos",
+  "private": "true",
+  "scripts": {
+    "clean": "rm -rf _site",
+    "start": "TAILWIND_MODE=watch NODE_ENV=development npm-run-all clean --parallel dev:*",
+    "dev:eleventy": "ELEVENTY_ENV=development npx @11ty/eleventy --incremental --quiet --serve",
+    "dev:vite": "vite",
+    "build": "NODE_ENV=production npm-run-all clean prod:vite prod:eleventy",
+    "prod:eleventy": "ELEVENTY_ENV=production npx @11ty/eleventy --output=./_site",
+    "prod:vite": "NODE_ENV=production vite build",
+    "testbuild": "NODE_ENV=production npm run build && serve _site"
+  },
+  "keywords": [],
+  "author": "",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/fpapado/eleventy-with-vite"
-  },
-  "bugs": {
-    "url": "https://github.com/fpapado/eleventy-with-vite"
-  },
-  "main": "index.js",
+  "browserslist": [
+    "last 4 versions",
+    "> 1%",
+    "maintained node versions"
+  ],
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1",
     "@11ty/eleventy-img": "^0.9.0",
@@ -44,15 +53,5 @@
     "serve": "^12.0.0",
     "tailwindcss": "^2.2.6",
     "vite": "^2.4.3"
-  },
-  "scripts": {
-    "clean": "rm -rf _site",
-    "start": "TAILWIND_MODE=watch NODE_ENV=development npm-run-all clean --parallel dev:*",
-    "dev:eleventy": "ELEVENTY_ENV=development npx @11ty/eleventy --incremental --quiet --serve",
-    "dev:vite": "vite",
-    "build": "NODE_ENV=production npm-run-all clean prod:vite prod:eleventy",
-    "prod:eleventy": "ELEVENTY_ENV=production npx @11ty/eleventy --output=./_site",
-    "prod:vite": "NODE_ENV=production vite build",
-    "testbuild": "NODE_ENV=production npm run build && serve _site"
   }
 }
