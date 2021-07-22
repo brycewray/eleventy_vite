@@ -1,6 +1,6 @@
 # Repo for brycewray.com
 
-This is the repository from which the [Eleventy](https://11ty.dev)-generated version of [brycewray.com](https://www.brycewray.com/) is built. I suggest you use it **only for reference** and, rather than cloning or forking it, use one of the **starter sets** based on it (see below).
+This is the repository from which the [Eleventy](https://11ty.dev)-generated version of [brycewray.com](https://www.brycewray.com/) is built, based on [eleventy-with-vite](https://github.com/fpapado/eleventy-with-vite) by [Fotis Papadogeorgopoulos](https://github.com/fpapado). I suggest you use this repo **only for reference** and, rather than cloning or forking it, use one of the **starter sets** based on it (see below).
 
 ## Starter sets based on this repo
 
