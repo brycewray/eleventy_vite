@@ -7,6 +7,10 @@ html, body {
   @apply dark:bg-black;
 }
 
+html {
+  scroll-padding-top: 80px;
+}
+
 body {
   @apply dark:text-gray-100;
   /* font-feature-settings: "liga" 1; */
@@ -77,6 +81,14 @@ h4, .h4 {
 
 h5, .h5, h6, .h6 {
   @apply text-lg;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply outline-none active:outline-none focus:outline-none hover:outline-none border-none active:border-none focus:border-none hover:border-none
+}
+
+.header-anchor {
+  @apply border-none active:border-none focus:border-none hover:border-none text-black hover:text-black focus:text-black active:text-black dark:text-white dark:hover:text-white dark:focus:text-white dark:active:text-white pointer-events-none;
 }
 
 article h1, article h2, article h3, article h4 {
