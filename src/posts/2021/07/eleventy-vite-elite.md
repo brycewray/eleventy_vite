@@ -5,7 +5,7 @@ subtitle: "Re-bundling, but without the pain of webpack"
 description: "Pairing Eleventy and Vite shows me how far bundlers have come in a short time."
 author: Bryce Wray
 date: 2021-07-24T10:46:00-05:00
-#lastmod:
+#lastmod: 2021-07-24T13:03:00-05:00
 discussionId: "2021-07-eleventy-vite-elite"
 featured_image: "Eleventy-and-Vite-logos__with_daniele-levis-pelusi-nEczFlV-GMI-unsplash_3000x2000_90pct.jpg"
 featured_image_width: 3000
@@ -60,19 +60,19 @@ As a result, instead of having this in your HTML:
 <link type="stylesheet/text" href="/assets/css/file3.css">
 
 <!-- at the end of the BODY -->
-<script src="widgets-handler.js"></script>
-<script src="mobile-menu-helper.js"></script>
-<script src="image-effects.js"></script>
+<script src="/assets/js/widgets-handler.js"></script>
+<script src="/assets/js/mobile-menu-helper.js"></script>
+<script src="/assets/js/image-effects.js"></script>
 ```
 
 .&nbsp;.&nbsp;. you can have something like this:
 
 ```html
 <!-- in the HEAD -->
-<link type="stylesheet/text" href="/assets/css/main.9425fffc.css">
+<link type="stylesheet/text" href="/assets/main.9425fffc.css">
 
 <!-- at the end of the BODY -->
-<script src="main.b44a9abe.js"></script>
+<script src="/assets/main.b44a9abe.js"></script>
 ```
 
 Anyway, I told Chad:
