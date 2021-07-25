@@ -5,7 +5,7 @@ subtitle: "Re-bundling, but without the pain of webpack"
 description: "Pairing Eleventy and Vite shows me how far bundlers have come in a short time."
 author: Bryce Wray
 date: 2021-07-24T10:46:00-05:00
-#lastmod: 2021-07-24T13:03:00-05:00
+lastmod: 2021-07-25T16:49:00-05:00
 discussionId: "2021-07-eleventy-vite-elite"
 featured_image: "Eleventy-and-Vite-logos__with_daniele-levis-pelusi-nEczFlV-GMI-unsplash_3000x2000_90pct.jpg"
 featured_image_width: 3000
@@ -174,6 +174,9 @@ When somebody asks me a technical question that intrigues me, there's no telling
 Such was the case with the process I described herein. It started with a reader's innocent question about how to cache-bust JS files. First, I simply speculated on a hack-ish way I might do it. From there, I progressed to actually implementing that method. Then, my curiosity too much to resist, I experimented with an Eleventy/Vite setup. Finally, I converted all of this site over to Eleventy/Vite.
 
 Sometimes, lucky rabbits find carrots. So far, the Eleventy/Vite combo is proving to be a tasty morsel. I'll keep you advised as to my progress, including most definitely if this new way of handling the site should turn out unexpectedly to be more stick than carrot.
+
+**Update, 2021-07-25**: I now have an Eleventy/Vite starter set online; see "[Beginner's luck #4: the Vite edition](/posts/2021/07/beginners-luck-4-vite-edition)."
+{.yellowBox}
 
 [^1]:	Of the hashed files, two are JS "helper" files which keep both the image "lazy-loading" functionality and the recently added all-Tailwind nav menu from violating the site's [Content Security Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)---specifically, its [`script-src`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src) part.
 
