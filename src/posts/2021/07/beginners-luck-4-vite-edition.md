@@ -5,7 +5,7 @@ subtitle: "The stable of starter sets grows again"
 description: "Now I have an Eleventy/Vite starter, and here’s some of the code that makes it go."
 author: Bryce Wray
 date: 2021-07-25T16:46:00-05:00
-lastmod: 2021-07-26T06:56:00-05:00
+lastmod: 2021-07-26T09:43:00-05:00
 discussionId: "2021-07-beginners-luck-4-vite-edition"
 featured_image: susan-holt-simpson-H7SCRwU1aiM-unsplash_4608x3072.jpg
 featured_image_width: 4608
@@ -95,7 +95,7 @@ First came the Eleventy config file, `.eleventy.js`. At its top, **before** the 
 const fs = require("fs/promises")
 ```
 
-. . . which, of course, would **required** replacing an existing `const fs` statement had there been one (noting for those of you who may, again, want only to convert a repo of your own).
+. . . which, of course, would have **required** replacing an existing `const fs` statement had there been one (noting for those of you who may, again, want only to convert a repo of your own).
 
 Still at the top, I added:
 
