@@ -5,7 +5,7 @@ subtitle: "The stable of starter sets grows again"
 description: "Now I have an Eleventy/Vite starter, and here’s some of the code that makes it go."
 author: Bryce Wray
 date: 2021-07-25T16:46:00-05:00
-#lastmod:
+lastmod: 2021-07-26T06:56:00-05:00
 discussionId: "2021-07-beginners-luck-4-vite-edition"
 featured_image: susan-holt-simpson-H7SCRwU1aiM-unsplash_4608x3072.jpg
 featured_image_width: 4608
@@ -18,7 +18,7 @@ featured_image_caption: |
 
 A quickie for you (if you don't count the code blocks, that is) . . .
 
-Given the interest the community showed in my previous post, "[Eleventy + Vite = elite](/posts/2021/07/eleventy-vite-elite)," I thought I'd go ahead and issue [yet another starter set](/posts/2021/06/beginners-luck-3-adding-zola-starter): a [Eleventy](https://11ty.dev)/[Vite](https://vitejs.dev) combo. To make it, I simply cloned the existing [`eleventy_solo_starter_njk` repository](https://github.com/brycewray/eleventy_solo_starter_njk) and converted it for use with Vite as described herein. That means it gives you Eleventy with [Nunjucks](https://mozilla.github.io/nunjucks) templating, Vite, **and** [Tailwind CSS](https://tailwindcss.com) (plus [JIT](https://tailwindcss.com/docs/just-in-time-mode)) to boot.
+Given the interest the community showed in my previous post, "[Eleventy + Vite = elite](/posts/2021/07/eleventy-vite-elite)," I thought I'd go ahead and issue [yet another starter set](/posts/2021/06/beginners-luck-3-adding-zola-starter): an [Eleventy](https://11ty.dev)/[Vite](https://vitejs.dev) combo. To make it, I simply cloned the existing [`eleventy_solo_starter_njk` repository](https://github.com/brycewray/eleventy_solo_starter_njk) and converted it for use with Vite as described herein. That means it gives you Eleventy with [Nunjucks](https://mozilla.github.io/nunjucks) templating, Vite, **and** [Tailwind CSS](https://tailwindcss.com) (plus [JIT](https://tailwindcss.com/docs/just-in-time-mode)) to boot.
 
 The new starter's repo is [`eleventy_vite_starter`](https://github.com/brycewray/eleventy_vite_starter). There's also an [online demo](https://eleventy-vite.vercel.app) which, if you're familiar with any of my other starters, may not float your boat---but the thing is, I was able to convert its predecessor to this config in well under an hour. That augurs well for your efforts, I would hope.
 
@@ -296,7 +296,7 @@ First up was the site-wide `base.njk`, the entirety of which now became:
 Then, I finished by changing the closing, CSS-related part of the site-wide `head.njk` template (which, as the name  implies, provides each page's `head` section) to the following:
 
 {% raw %}
-```html
+```twig
     {% if build.env == "production" %}
       {# Add any CSS from the main script #}
       {% viteLinkStylesheetTags "src/client/main.js" %}
