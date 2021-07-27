@@ -12,8 +12,7 @@ const OUTPUT_DIR = "_site"
 
 // This will change both Eleventy's pathPrefix, and the one output by the
 // vite-related shortcodes below. Double-check if you change this, as this is only a demo :)
-const PATH_PREFIX = "/";
-
+const PATH_PREFIX = "/"
 
 async function imageShortcode(src, alt) {
   let sizes = "(min-width: 1024px) 100vw, 50vw"
@@ -217,52 +216,56 @@ module.exports = function (eleventyConfig) {
   // and location of manifest.json
   // you could probably read vite.config.js and get that information directly
   // @see https://vitejs.dev/guide/backend-integration.html
-  eleventyConfig.addNunjucksAsyncShortcode("viteScriptTag", viteScriptTag);
+  eleventyConfig.addNunjucksAsyncShortcode("viteScriptTag", viteScriptTag)
   eleventyConfig.addNunjucksAsyncShortcode(
     "viteLegacyScriptTag",
     viteLegacyScriptTag
-  );
+  )
   eleventyConfig.addNunjucksAsyncShortcode(
     "viteLinkStylesheetTags",
     viteLinkStylesheetTags
-  );
+  )
   eleventyConfig.addNunjucksAsyncShortcode(
     "viteLinkModulePreloadTags",
     viteLinkModulePreloadTags
-  );
+  )
+  eleventyConfig.addNunjucksAsyncShortcode(
+    "viteLinkAssetsTags",
+    viteLinkAssetsTags
+  )
 
   async function viteScriptTag(entryFilename) {
-    const entryChunk = await getChunkInformationFor(entryFilename);
-    return `<script type="module" src="${PATH_PREFIX}${entryChunk.file}"></script>`;
+    const entryChunk = await getChunkInformationFor(entryFilename)
+    return `<script type="module" src="${PATH_PREFIX}${entryChunk.file}"></script>`
   }
 
   /* Generate link[rel=modulepreload] tags for a script's imports */
   /* TODO(fpapado): Consider link[rel=prefetch] for dynamic imports, or some other signifier */
   async function viteLinkModulePreloadTags(entryFilename) {
-    const entryChunk = await getChunkInformationFor(entryFilename);
+    const entryChunk = await getChunkInformationFor(entryFilename)
     if (!entryChunk.imports || entryChunk.imports.length === 0) {
       console.log(
         `The script for ${entryFilename} has no imports. Nothing to preload.`
-      );
-      return "";
+      )
+      return ""
     }
     /* There can be multiple import files per entry, so assume many by default */
     /* Each entry in .imports is a filename referring to a chunk in the manifest; we must resolve it to get the output path on disk.
      */
     const allPreloadTags = await Promise.all(
       entryChunk.imports.map(async (importEntryFilename) => {
-        const chunk = await getChunkInformationFor(importEntryFilename);
-        return `<link rel="modulepreload" href="${PATH_PREFIX}${chunk.file}"></link>`;
+        const chunk = await getChunkInformationFor(importEntryFilename)
+        return `<link rel="modulepreload" href="${PATH_PREFIX}${chunk.file}"></link>`
       })
-    );
+    )
 
-    return allPreloadTags.join("\n");
+    return allPreloadTags.join("\n")
   }
 
   async function viteLinkStylesheetTags(entryFilename) {
-    const entryChunk = await getChunkInformationFor(entryFilename);
+    const entryChunk = await getChunkInformationFor(entryFilename)
     if (!entryChunk.css || entryChunk.css.length === 0) {
-      console.warn(`No css found for ${entryFilename} entry. Is that correct?`);
+      console.warn(`No css found for ${entryFilename} entry. Is that correct?`)
       return "";
     }
     /* There can be multiple CSS files per entry, so assume many by default */
@@ -271,12 +274,33 @@ module.exports = function (eleventyConfig) {
         (cssFile) =>
           `<link rel="stylesheet" href="${PATH_PREFIX}${cssFile}"></link>`
       )
-      .join("\n");
+      .join("\n")
+  }
+
+  async function viteLinkAssetsTags(entryFilename) {
+    const entryChunk = await getChunkInformationFor(entryFilename)
+    if (!entryChunk.assets || entryChunk.assets.length === 0) {
+      console.warn(`No assets found for ${entryFilename} entry. Is that correct?`)
+      return ""
+    }
+    /* There can be multiple assets files per entry, so assume many by default */
+    /* 
+      However, there also can be multiple **kinds** of asset files, so we have to
+      handle each appropriately. We'll start with fonts, while other handling is a TODO (brycewray).
+    */
+    return entryChunk.assets
+    .map(
+        (assetsFile) =>
+          assetsFile.split('.').pop() == 'woff2' 
+            ? `<link rel="preload" href="${PATH_PREFIX}${assetsFile}" crossorigin="anonymous" as="font" type="font/woff2" />`
+            : ``
+      )
+      .join("\n")
   }
 
   async function viteLegacyScriptTag(entryFilename) {
-    const entryChunk = await getChunkInformationFor(entryFilename);
-    return `<script nomodule src="${PATH_PREFIX}${entryChunk.file}"></script>`;
+    const entryChunk = await getChunkInformationFor(entryFilename)
+    return `<script nomodule src="${PATH_PREFIX}${entryChunk.file}"></script>`
   }
 
   async function getChunkInformationFor(entryFilename) {
@@ -285,28 +309,28 @@ module.exports = function (eleventyConfig) {
     if (!entryFilename) {
       throw new Error(
         "You must specify an entryFilename, so that vite-script can find the correct file."
-      );
+      )
     }
 
     // TODO: Consider caching this call, to avoid going to the filesystem every time
     const manifest = await fs.readFile(
       path.resolve(process.cwd(), "_site", "manifest.json")
-    );
-    const parsed = JSON.parse(manifest);
+    )
+    const parsed = JSON.parse(manifest)
 
-    let entryChunk = parsed[entryFilename];
+    let entryChunk = parsed[entryFilename]
 
     if (!entryChunk) {
       const possibleEntries = Object.values(parsed)
         .filter((chunk) => chunk.isEntry === true)
         .map((chunk) => `"${chunk.src}"`)
-        .join(`, `);
+        .join(`, `)
       throw new Error(
         `No entry for ${entryFilename} found in _site/manifest.json. Valid entries in manifest: ${possibleEntries}`
-      );
+      )
     }
 
-    return entryChunk;
+    return entryChunk
   }
 
   return {
@@ -331,4 +355,4 @@ module.exports = function (eleventyConfig) {
       data: "../_data",
     },
   }
-};
+}
