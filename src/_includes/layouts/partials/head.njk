@@ -94,12 +94,12 @@
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
 
+    <link rel="preload" href="/assets/fonts/Inter-3-19_subset_2021-06-18.woff2" crossorigin="anonymous" as="font" type="font/woff2" />
+
     {% if build.env == "production" %}
       {# Add any CSS from the main script #}
       {% viteLinkStylesheetTags "src/client/main.js" %}
       {% viteLinkModulePreloadTags "src/client/main.js" %}
-      {# Add assets from the main script #}
-      {% viteLinkAssetsTags "src/client/main.js" %}
     {% endif %}
 
   </head>

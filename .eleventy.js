@@ -229,10 +229,6 @@ module.exports = function (eleventyConfig) {
     "viteLinkModulePreloadTags",
     viteLinkModulePreloadTags
   )
-  eleventyConfig.addNunjucksAsyncShortcode(
-    "viteLinkAssetsTags",
-    viteLinkAssetsTags
-  )
 
   async function viteScriptTag(entryFilename) {
     const entryChunk = await getChunkInformationFor(entryFilename)
@@ -273,27 +269,6 @@ module.exports = function (eleventyConfig) {
       .map(
         (cssFile) =>
           `<link rel="stylesheet" href="${PATH_PREFIX}${cssFile}"></link>`
-      )
-      .join("\n")
-  }
-
-  async function viteLinkAssetsTags(entryFilename) {
-    const entryChunk = await getChunkInformationFor(entryFilename)
-    if (!entryChunk.assets || entryChunk.assets.length === 0) {
-      console.warn(`No assets found for ${entryFilename} entry. Is that correct?`)
-      return ""
-    }
-    /* There can be multiple assets files per entry, so assume many by default */
-    /* 
-      However, there also can be multiple **kinds** of asset files, so we have to
-      handle each appropriately. We'll start with fonts, while other handling is a TODO (brycewray).
-    */
-    return entryChunk.assets
-    .map(
-        (assetsFile) =>
-          assetsFile.split('.').pop() == 'woff2' 
-            ? `<link rel="preload" href="${PATH_PREFIX}${assetsFile}" crossorigin="anonymous" as="font" type="font/woff2" />`
-            : ``
       )
       .join("\n")
   }
