@@ -5,7 +5,7 @@ subtitle: "An Electron-ic firestorm"
 description: "A timely follow-up to my earlier article about password management."
 author: Bryce Wray
 date: 2021-08-14T10:20:00-05:00
-#lastmod:
+#lastmod: 2021-08-14T10:30:00-05:00
 discussionId: "2021-08-1Password-hits-fan"
 featured_image: "lock-and-castle-5359174_4109x2832.jpg"
 featured_image_width: 4109
@@ -24,7 +24,7 @@ Earlier this week, AgileBits, the company behind the [1Password](https://1passwo
 
 As a result, angry 1Password users have been "oh-hell-no"-ing all over the various forum posts about the new version, clamoring for alternatives to a vendor they believe has hosed them.
 
-Hence, I offer this follow-up to my earlier article. While it's always timely to talk about password management apps, this week's angst made that doubly so for not only the original article but also this follow-up. 
+Hence, I offer this follow-up to my earlier article. While it's always timely to talk about password management apps, this week's angst made that doubly so for not only the original article but also this follow-up.
 
 First, let's address **why** people are so angry about 1Password 8.
 
@@ -51,7 +51,7 @@ The whole subject of vaults was already touchy among 1Password users who resiste
 In the [original article](/posts/2021/06/two-paths-password-management) to which this is a follow-up, I narrowed the field of password management apps down to two categories, which I labeled "the KeePass way" and "the non-KeePass way." To summarize from my description in that article:
 
 - **The [KeePass](https://keepass.info) way** stores credentials on an encrypted file stored in one of the open-source KeePass formats, usually with the `.kdbx` extension. There are numerous KeePass clients for multiple devices. Many of those client apps are absolutely free, so you may be able to do all this without spending a dime. You choose the apps and browser extensions which will let you work with that file, and you choose where that file will be stored. It can be just on your local device. It can be on cloud storage. It even can be copied manually to multiple devices (although the latter is getting difficult in this time when phones and tablets are gradually losing physical ports). While the freedom of the KeePass way may sound great, it also requires a bigger learning curve and is often less convenient than the non-KeePass way I'll describe next.
-- **The non-KeePass way** stores credentials on an encrypted file stored in a proprietary format, varying by vendor, and typically stored on the vendor's cloud storage on some sort of subscription basis that includes apps and browser extensions for different platforms. You have less freedom and more expenditures this way. However, in return, you get easy synchronization of your credentials across platforms and devices, and you also get the convenience of apps and browser extensions backed by companies, not individual developers on their off-hours. There's an obvious financial incentive for those companies to make this work well---for example, a data breach would obviously be catastrophic to such a company's reputation and sales. By and large, these vendors do appear to *keep* all of it running smoothly and safely. Finally, the learning curve is really not a factor, here: the non-KeePass way "just works" in a fashion that even your most technophobic relatives and employees will find palatable.
+- **The non-KeePass way** stores credentials on an encrypted file stored in a proprietary format, varying by vendor, and typically stored on the vendor's cloud storage on some sort of subscription basis that includes apps and browser extensions for different platforms. You have less freedom and more expenditures this way. However, in return, you get easy synchronization of your credentials across platforms and devices, and you also get the convenience of apps and browser extensions backed by companies, not individual developers on their off-hours. There's an obvious financial incentive for those companies to make this work well---for example, a data breach could be catastrophic to such a company's reputation and sales. By and large, these vendors do appear to *keep* all of it running smoothly and safely. Finally, the learning curve is really not a factor, here: the non-KeePass way "just works" in a fashion that even your most technophobic relatives and employees will find palatable.
 
 All that said, where would I recommend "never-again" 1Password users haul their little red wagons full of credentials to avoid the new version that's so angered them? I'll give you two different answers: one for the KeePass way and one for the non-KeePass way.
 
