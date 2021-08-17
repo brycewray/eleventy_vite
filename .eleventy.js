@@ -1,4 +1,4 @@
-const fs = require("fs")
+const fs = require("fs/promises")
 const { DateTime } = require("luxon")
 const htmlmin = require("html-minifier")
 const ErrorOverlay = require("eleventy-plugin-error-overlay")
