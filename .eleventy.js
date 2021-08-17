@@ -22,7 +22,7 @@ async function imageShortcode(src, alt) {
   if(alt === undefined) {
     // Throw an error on missing alt (alt="" works okay)
     throw new Error(`Missing \`alt\` on responsive image from: ${src}`)
-  }  
+  }
   let metadataImg = await Image(src, {
     widths: [600, 900, 1500],
     formats: ['webp', 'jpeg'],
@@ -33,9 +33,9 @@ async function imageShortcode(src, alt) {
       const name = path.basename(src, extension)
       return `${name}-${width}w.${format}`
     }
-  })  
+  })
   let lowsrc = metadataImg.jpeg[0]
-  let highsrc = metadataImg.jpeg[metadataImg.jpeg.length - 1]  
+  let highsrc = metadataImg.jpeg[metadataImg.jpeg.length - 1]
   return `<picture>
     ${Object.values(metadataImg).map(imageFormat => {
       return `  <source type="${imageFormat[0].sourceType}" srcset="${imageFormat.map(entry => entry.srcset).join(", ")}" sizes="${sizes}">`
@@ -52,7 +52,7 @@ async function imageShortcode(src, alt) {
 
 
 module.exports = function (eleventyConfig) {
-  
+
   eleventyConfig.addNunjucksAsyncShortcode("image", imageShortcode)
   eleventyConfig.addLiquidShortcode("image", imageShortcode)
   // === Liquid needed if `markdownTemplateEngine` **isn't** changed from Eleventy default
@@ -175,9 +175,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.setBrowserSyncConfig({
     ...eleventyConfig.browserSyncConfig,
     files: [
-      "src/**/*.js", 
-      "src/assets/css/*.css", 
-      // "src/assets/scss/*.scss", 
+      "src/**/*.js",
+      "src/assets/css/*.css",
+      // "src/assets/scss/*.scss",
       "src/**/*.md"
     ],
     ghostMode: false,
@@ -243,10 +243,6 @@ module.exports = function (eleventyConfig) {
   // @see https://vitejs.dev/guide/backend-integration.html
   eleventyConfig.addNunjucksAsyncShortcode("viteScriptTag", viteScriptTag)
   eleventyConfig.addNunjucksAsyncShortcode(
-    "viteLegacyScriptTag",
-    viteLegacyScriptTag
-  )
-  eleventyConfig.addNunjucksAsyncShortcode(
     "viteLinkStylesheetTags",
     viteLinkStylesheetTags
   )
@@ -298,11 +294,6 @@ module.exports = function (eleventyConfig) {
       .join("\n")
   }
 
-  async function viteLegacyScriptTag(entryFilename) {
-    const entryChunk = await getChunkInformationFor(entryFilename)
-    return `<script nomodule src="${PATH_PREFIX}${entryChunk.file}"></script>`
-  }
-
   async function getChunkInformationFor(entryFilename) {
     // We want an entryFilename, because in practice you might have multiple entrypoints
     // This is similar to how you specify an entry in development more
@@ -335,9 +326,9 @@ module.exports = function (eleventyConfig) {
 
   return {
     templateFormats: [
-      "html", 
-      "md", 
-      "njk", 
+      "html",
+      "md",
+      "njk",
       "11ty.js"
     ],
     pathPrefix: PATH_PREFIX,

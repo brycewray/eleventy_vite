@@ -1,4 +1,4 @@
-import "vite/dynamic-import-polyfill"
+// import "vite/dynamic-import-polyfill"
 import "../assets/css/index.css"
 import "../assets/js/lazyload_17-4-0.min.js"
 import "../assets/js/lazyload-helper.js"
